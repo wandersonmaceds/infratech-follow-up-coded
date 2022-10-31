@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { saveUser, listUsers } from "../src/repositories/user.repository.js";
 import { createUser } from "../src/use-cases/create-user.js";
 

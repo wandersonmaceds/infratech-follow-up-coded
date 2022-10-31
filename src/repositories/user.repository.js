@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { readFromFile, saveOnFile } from '../utils/fs.utils.js';
 
 const filePath = process.env.STORAGE_FILE_PATH;
