@@ -12,5 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "date-fns": "^2.29.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
