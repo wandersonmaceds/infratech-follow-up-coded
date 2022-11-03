@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { listUsers, saveUser } from '../repositories/user.repository.js';
 import { getCurrentDateFormatted } from '../utils/date.utils.js';
 import { createUserValidator } from '../validators/create-user.validator.js';
+import { UserEntity } from '../entities/user.entity.js';
 
 export function createUser({ name, email, password }) {
     const users = listUsers();
@@ -13,14 +14,15 @@ export function createUser({ name, email, password }) {
         return validations.errors;
     }
 
-    
-    const createdUser = {
-        id: randomUUID(),
+    const userId = randomUUID();
+    const userCreatedDate =  getCurrentDateFormatted();
+    const createdUser = new UserEntity(
+        userId,
         name,
         email,
         password,
-        createdDate: getCurrentDateFormatted(),
-    }
+       userCreatedDate,
+    );
 
     saveUser(createdUser);
 
