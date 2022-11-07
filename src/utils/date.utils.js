@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
 
-export function getCurrentDateFormatted() {
-    return format(new Date(), 'yyyy-MM-dd');
+export class DateTime {
+    static getCurrentDateFormatted(formatString) {
+        return format(new Date(), formatString);
+    }
 }

@@ -1,9 +1,8 @@
-import { saveUser, listUsers } from "../src/repositories/user.repository.js";
-import { createUser } from "../src/use-cases/create-user.js";
+import { UserRepository } from "../src/repositories/user.repository.js";
 
-const user1 = createUser({ name: 'Rodrigo', email: 'rodrigo@mail.com', password: '312aleatorio' });
+const userRepository = new UserRepository();
 
-saveUser(user1);
-const users = listUsers();
+userRepository.save({ name: 'Rodrigo', email: 'rodrigo@mail.com', password: '312aleatorio' });
+const users = userRepository.listAll();
 
 console.log(users);

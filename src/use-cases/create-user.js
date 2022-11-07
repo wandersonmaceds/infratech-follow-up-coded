@@ -1,28 +1,36 @@
 import { randomUUID } from 'node:crypto';
-import { listUsers, saveUser } from '../repositories/user.repository.js';
-import { getCurrentDateFormatted } from '../utils/date.utils.js';
-import { createUserValidator } from '../validators/create-user.validator.js';
+import { DateTime } from '../utils/date.utils.js';
+import { CreateUserValidator } from '../validators/create-user.validator.js';
+import { UserEntity } from '../entities/user.entity.js';
 
-export function createUser({ name, email, password }) {
-    const users = listUsers();
-    const emailList = users.map(user => user.email);
+export class CreateUserUseCase {
 
-    const validations = createUserValidator({ name, email, password, emailList });
-
-    if(validations.hasErrors) {
-        return validations.errors;
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+        this.createUserValidations = new CreateUserValidator();
     }
-
+    execute({ name, email, password }) {
+        const users = this.userRepository.findAll();
+        const emailList = users.map(user => user.email);
     
-    const createdUser = {
-        id: randomUUID(),
-        name,
-        email,
-        password,
-        createdDate: getCurrentDateFormatted(),
-    }
-
-    saveUser(createdUser);
-
-    return createdUser;
+        const validations = this.createUserValidations.execute({ name, email, password, emailList });
+    
+        if(validations.hasErrors()) {
+            return validations.errors;
+        }
+    
+        const userId = randomUUID();
+        const userCreatedDate = DateTime.getCurrentDateFormatted('yyyy-MM-dd');
+        const createdUser = new UserEntity(
+            userId,
+            name,
+            email,
+            password,
+           userCreatedDate,
+        );
+    
+        this.userRepository.save(createdUser);
+    
+        return createdUser;
+    }  
 }
