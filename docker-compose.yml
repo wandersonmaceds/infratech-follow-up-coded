@@ -1,0 +1,9 @@
+version: '3'
+services:
+  database:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: usuario
+      MONGO_INITDB_ROOT_PASSWORD: senha
+    ports:
+      - 27017:27017

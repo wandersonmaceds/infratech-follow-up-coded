@@ -3,21 +3,22 @@ import { UserEntity } from '../entities/user.entity.js';
 import { FileSystem } from '../utils/fs.utils.js';
 
 const filePath = process.env.STORAGE_FILE_PATH;
+const connectionString = process.env.DB_CONNECTION_STRING;
+const dbName = process.env.DB_NAME;
 
 export class UserRepository {
+    #usersCollection;
 
-    constructor() {
-        this.fs = new FileSystem(filePath);
+    constructor(connection) {
+        this.#usersCollection = connection.collection('users');
     }
 
-    save(user) {
-        const users = this.listAll();
-        users.push(user);
-        this.fs.save(users);
+    async save(user) {
+        await this.#usersCollection.insertOne(user);
     }   
 
-    listAll() {
-        const users = this.fs.read();
+    async listAll() {
+        const users = await this.#usersCollection.find().toArray();
         return users.map(userData => new UserEntity(
             userData.id, 
             userData.name, 

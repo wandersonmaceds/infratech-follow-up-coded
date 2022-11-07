@@ -9,8 +9,8 @@ export class CreateUserUseCase {
         this.userRepository = userRepository;
         this.createUserValidations = new CreateUserValidator();
     }
-    execute({ name, email, password }) {
-        const users = this.userRepository.findAll();
+    async execute({ name, email, password }) {
+        const users = await this.userRepository.listAll();
         const emailList = users.map(user => user.email);
     
         const validations = this.createUserValidations.execute({ name, email, password, emailList });
