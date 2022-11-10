@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { DateTime } from '../utils/date.utils.js';
 import { CreateUserValidator } from '../validators/create-user.validator.js';
 import { UserEntity } from '../entities/user.entity.js';
+import { BadRequestError } from '../http/errors/bad-request.error.js';
 
 export class CreateUserUseCase {
 
@@ -16,7 +17,7 @@ export class CreateUserUseCase {
         const validations = this.createUserValidations.execute({ name, email, password, emailList });
     
         if(validations.hasErrors()) {
-            return validations.errors;
+            throw new BadRequestError('Bad Request', validations.errors);
         }
     
         const userId = randomUUID();

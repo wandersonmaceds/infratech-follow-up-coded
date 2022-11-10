@@ -1,10 +1,5 @@
 import 'dotenv/config';
 import { UserEntity } from '../entities/user.entity.js';
-import { FileSystem } from '../utils/fs.utils.js';
-
-const filePath = process.env.STORAGE_FILE_PATH;
-const connectionString = process.env.DB_CONNECTION_STRING;
-const dbName = process.env.DB_NAME;
 
 export class UserRepository {
     #usersCollection;
@@ -14,7 +9,7 @@ export class UserRepository {
     }
 
     async save(user) {
-        await this.#usersCollection.insertOne(user);
+        await this.#usersCollection.insertOne({ ...user });
     }   
 
     async listAll() {
